@@ -7,6 +7,9 @@ import java.util.List;
 
 /**
  * 二叉树遍历——递归方式
+ * [1, 2, 4, 5, 3, 6, 7]
+ * [4, 2, 5, 1, 6, 3, 7]
+ * [4, 5, 2, 6, 7, 3, 1]
  * @Title: BinaryTree
  * @Description:
  * @Author deepexi-raobinghua
