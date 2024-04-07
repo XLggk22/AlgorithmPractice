@@ -1,7 +1,6 @@
 package my.text.algorithm.dp;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * 判断是否可以将一组数字分割成两组等和数组
@@ -22,7 +21,8 @@ public class SplitEqualSumArrays {
     public static void main(String[] args) {
         int[] arr = new int[]{1, 5, 11, 5};
 
-        System.out.println("是否可以拆分: " + method01_dp(arr));
+//        System.out.println("是否可以拆分: " + method01_dp(arr));
+        System.out.println("是否可以拆分: " + method02_backtrack(arr));
 
     }
 
@@ -70,5 +70,67 @@ public class SplitEqualSumArrays {
         return dp[avg] == avg;
     }
 
+    /**
+     * 递归存放处理路径
+     */
+    private static LinkedList<Integer> path = new LinkedList<Integer>();
 
+    /**
+     * 最大值路径
+     */
+    private static LinkedList<Integer> maxValuePath = new LinkedList<Integer>();
+
+    /**
+     * 方法二：回溯
+     * 层层回溯，当值等于sum/2时候即可，表示可以拆分
+     */
+    public static boolean method02_backtrack(int[] arr){
+        // 数组大小小于2,直接返回
+        if (arr.length < 2){
+            return false;
+        }
+
+        // 数组所有数字总和
+        int sum = 0;
+        for (int i : arr) {
+            sum += i;
+        }
+
+        // 总数非偶数，不能拆分
+        if (sum % 2 != 0){
+            return false;
+        }
+
+        return method02_backtrack_body(arr, 0, 0, sum/2);
+    }
+
+    /**
+     * 方法二回溯方法体
+     * @param arr
+     * @param targetNum
+     * @return
+     */
+    public static boolean method02_backtrack_body(int[] arr, int currIndex, int currSum, int targetNum){
+        if (currSum == targetNum){
+            maxValuePath = new LinkedList<>(path);
+            return true;
+        }
+        if (currSum > targetNum){
+            return false;
+        }
+
+        for (int i = currIndex; i < arr.length; i++){
+            currIndex ++;
+            currSum += arr[i];
+            path.add(arr[i]);
+            boolean result = method02_backtrack_body(arr, currIndex, currSum, targetNum);
+            if (result){
+                System.out.println("arr can be split, maxValuePath: " + maxValuePath);
+                return true;
+            }
+            currSum -= arr[i];
+            path.removeLast();
+        }
+        return false;
+    }
 }
