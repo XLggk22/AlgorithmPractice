@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * 目标数
  * 给定一个非负整数数组，a1, a2, ..., an, 和一个目标数，S。
  * 现在你有两个符号 + 和 -。对于数组中的任意一个整数，你都可以从 + 或 -中选择一个符号添加在前面。
  * 返回可以使最终数组和为目标数 S 的所有添加符号的方法数。
@@ -44,31 +45,31 @@ public class FindTargetSumWays {
      * 看不太懂，见资料
      *   感觉这题和上楼梯的有点像
      */
-    private static int method01_dp(int[] arr, int target){
-        // check whether can array split into target array
+    private static int method01_dp(int[] arr, int target) {
+        // check whether array can be split
         int sum = 0;
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i <arr.length; i++) {
             sum += arr[i];
         }
 
-        // arr is positive array， then sum must >= Math.abs(target)
         if (sum < Math.abs(target)){
             return 0;
         }
+
         if ((sum + target) % 2 != 0){
             return 0;
         }
 
-
-        // init array
+        // define dp array
         int bagSize = (sum + target) / 2;
-        bagSize = Math.abs(bagSize);
         int[] dp = new int[bagSize + 1];
-        dp[0] = 1;
 
-        // dp iterate ap[i] += dp[j-num[i]]
+        // init dp array, dp[1]=1, otherwise dp array will all zero value
+        dp[1] = 1;
+
+        // dp iterate
         for (int i = 0; i < arr.length; i++) {
-            for (int j = bagSize; j >= arr[i] ; j--) {
+            for (int j = bagSize; j >= arr[i]; j--) {
                 dp[j] += dp[j-arr[i]];
             }
         }
